@@ -139,5 +139,19 @@ def main():
             print("Invalid choice!")
 
 
+# ✅ CI SAFE ENTRY POINT
 if __name__ == "__main__":
-    main()
+    if os.environ.get("CI") == "true":
+        print("Running in CI mode...")
+        calc = Calculator()
+        print("Add:", calc.add(2, 3))
+        print("Multiply:", calc.multiply(3, 4))
+
+        manager = TaskManager("ci_tasks.json")
+        manager.add_task("CI Task", "Testing in CI pipeline")
+        tasks = manager.list_tasks()
+        print("Tasks:", tasks)
+
+        print("CI checks completed successfully.")
+    else:
+        main()
